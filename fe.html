@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <title>Študenti</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #students {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: scale(1.03);
+        }
+
+        #detail {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Zoznam študentov</h1>
+
+<div id="students"></div>
+
+<div id="detail"></div>
+
+<script>
+    const API_URL = "http://127.0.0.1:5000/api";
+
+    async function loadStudents() {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+
+        const container = document.getElementById("students");
+        container.innerHTML = "";
+
+        data.students.forEach(student => {
+            const card = document.createElement("div");
+            card.className = "card";
+
+            card.innerHTML = `
+                <strong>${student.name || "Neznáme"}</strong><br>
+                ${student.surname || ""}<br>
+                <small>${student.nickame || ""}</small>
+            `;
+
+            card.onclick = () => loadStudentDetail(student.id);
+
+            container.appendChild(card);
+        });
+    }
+
+    async function loadStudentDetail(id) {
+        const res = await fetch(`${API_URL}/student/${id}`);
+        const student = await res.json();
+
+        const detail = document.getElementById("detail");
+        detail.style.display = "block";
+
+        detail.innerHTML = `
+            <h2>Detail študenta</h2>
+            <p><strong>Meno:</strong> ${student.name}</p>
+            <p><strong>Priezvisko:</strong> ${student.surname}</p>
+            <p><strong>Prezývka:</strong> ${student.nickame}</p>
+            ${student.image ? `<img src="${student.image}" width="150">` : ""}
+        `;
+    }
+
+    loadStudents();
+</script>
+
+</body>
+</html>
