@@ -2,11 +2,11 @@ import psycopg2
 
 databaza = {
     "students": [
-        {"id": 1, "name": "Adrián", "surname": "Červenka", "nickame": "ChillyHotPpr"},
-        {"id": 2, "name": "Karolína", "surname": "Kmeťová", "nickame": "null"},
-        {"id": 3, "name": "Matej", "surname": "R", "nickame": "T-34"},
-        {"id": 4, "name": "Milan", "surname": "K", "nickame": "Lopta"},
-        {"id": 5, "name": "Dávid", "surname": "Š", "nickame": "DVD"},
+        {"id": 1, "name": "Adrián", "surname": "Červenka", "nickname": "ChillyHotPpr"},
+        {"id": 2, "name": "Karolína", "surname": "Kmeťová", "nickname": "null"},
+        {"id": 3, "name": "Matej", "surname": "R", "nickname": "T-34"},
+        {"id": 4, "name": "Milan", "surname": "K", "nickname": "Lopta"},
+        {"id": 5, "name": "Dávid", "surname": "Š", "nickname": "DVD"},
         # ... rest of your data
     ]
 }
