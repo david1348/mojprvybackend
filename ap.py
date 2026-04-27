@@ -13,121 +13,121 @@ databaza = {
             "id": 1,
             "name": "Adrián",
             "surname": "Červenka",
-            "nickame": "ChillyHotPpr"
+            "nicnkame": "ChillyHotPpr"
         },
         {
             "id": 2,
             "name": "Karolína",
             "surname": "Kmeťová",
-            "nickame": "null"
+            "nickname": "null"
         },
         {
             "id": 3,
             "name": "Matej",
             "surname": "R",
-            "nickame": "T-34"
+            "nickname": "T-34"
         },
         {  
             "id": 4,
             "name": "Milan",
             "surname": "K",
-            "nickame": "Lopta"
+            "nickname": "Lopta"
         },
         {
             "id": 5,
             "name": "Dávid",
             "surname": "Š",
-            "nickame": "DVD"
+            "nickname": "DVD"
         },
         {
             "id": 6,
             "name": "",
             "surname": "",
-            "nickame": ""
+            "nickname": ""
         },
         {  
             "id": 7,
             "name": "",
             "surname": "",
-            "nickame": ""
+            "nickname": ""
         },
         {
             "id": 8,
             "name": "",
             "surname": "",
-            "nickame": ""
+            "nickname": ""
         },
         {
             "id": 9,
             "name": "",
             "surname": "",
-            "nickame": ""
+            "nickname": ""
         },
         {  
             "id": 10,
             "name": "",
             "surname": "",
-            "nickame": ""
+            "nickname": ""
         },
         {
             "id": 11,
             "name": "",
             "surname": "",
-            "nickame": ""
+            "nickname": ""
         },
         {
             "id": 12,
             "name": "",
             "surname": "",
-            "nickame": ""
+            "nickname": ""
         },
         {  
             "id": 13,
             "name": "",
             "surname": "",
-            "nickame": ""
+            "nickname": ""
         },
         {  
             "id": 14,
             "name": "",
             "surname": "",
-            "nickame": ""
+            "nickname": ""
         },
         {
             "id": 15,
             "name": "",
             "surname": "",
-            "nickame": ""
+            "nickname": ""
         },
         {
             "id": 16,
             "name": "",
             "surname": "",
-            "nickame": ""
+            "nickname": ""
         },
         {  
             "id": 17,
             "name": "",
             "surname": "",
-            "nickame": ""
+            "nickname": ""
         },
         {  
             "id": 18,
             "name": "",
             "surname": "",
-            "nickame": ""
+            "nickname": ""
         },
         {
             "id": 19,
             "name": "",
             "surname": "",
-            "nickame": ""
+            "nickname": ""
         },
         {
             "id": 20,
             "name": "",
             "surname": "",
-            "nickame": ""
+            "nickname": ""
         },
         
     ]
