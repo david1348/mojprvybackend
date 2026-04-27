@@ -1,146 +1,41 @@
-from flask import Flask, jsonify, request
-
-app = Flask(__name__)
-
-# test route
-@app.route('/')
-def home():
-    return "Vitajte!"
+import psycopg2
 
 databaza = {
     "students": [
-        {  
-            "id": 1,
-            "name": "Adrián",
-            "surname": "Červenka",
-            "nicnkame": "ChillyHotPpr"
-        },
-        {
-            "id": 2,
-            "name": "Karolína",
-            "surname": "Kmeťová",
-            "nickname": "null"
-        },
-        {
-            "id": 3,
-            "name": "Matej",
-            "surname": "R",
-            "nickname": "T-34"
-        },
-        {  
-            "id": 4,
-            "name": "Milan",
-            "surname": "K",
-            "nickname": "Lopta"
-        },
-        {
-            "id": 5,
-            "name": "Dávid",
-            "surname": "Š",
-            "nickname": "DVD"
-        },
-        {
-            "id": 6,
-            "name": "",
-            "surname": "",
-            "nickname": ""
-        },
-        {  
-            "id": 7,
-            "name": "",
-            "surname": "",
-            "nickname": ""
-        },
-        {
-            "id": 8,
-            "name": "",
-            "surname": "",
-            "nickname": ""
-        },
-        {
-            "id": 9,
-            "name": "",
-            "surname": "",
-            "nickname": ""
-        },
-        {  
-            "id": 10,
-            "name": "",
-            "surname": "",
-            "nickname": ""
-        },
-        {
-            "id": 11,
-            "name": "",
-            "surname": "",
-            "nickname": ""
-        },
-        {
-            "id": 12,
-            "name": "",
-            "surname": "",
-            "nickname": ""
-        },
-        {  
-            "id": 13,
-            "name": "",
-            "surname": "",
-            "nickname": ""
-        },
-        {  
-            "id": 14,
-            "name": "",
-            "surname": "",
-            "nickname": ""
-        },
-        {
-            "id": 15,
-            "name": "",
-            "surname": "",
-            "nickname": ""
-        },
-        {
-            "id": 16,
-            "name": "",
-            "surname": "",
-            "nickname": ""
-        },
-        {  
-            "id": 17,
-            "name": "",
-            "surname": "",
-            "nickname": ""
-        },
-        {  
-            "id": 18,
-            "name": "",
-            "surname": "",
-            "nickname": ""
-        },
-        {
-            "id": 19,
-            "name": "",
-            "surname": "",
-            "nickname": ""
-        },
-        {
-            "id": 20,
-            "name": "",
-            "surname": "",
-            "nickname": ""
-        },
-        
+        {"id": 1, "name": "Adrián", "surname": "Červenka", "nickame": "ChillyHotPpr"},
+        {"id": 2, "name": "Karolína", "surname": "Kmeťová", "nickame": "null"},
+        {"id": 3, "name": "Matej", "surname": "R", "nickame": "T-34"},
+        {"id": 4, "name": "Milan", "surname": "K", "nickame": "Lopta"},
+        {"id": 5, "name": "Dávid", "surname": "Š", "nickame": "DVD"},
+        # ... rest of your data
     ]
 }
 
-@app.route('/api')
-def api():
-    return jsonify(databaza)
+conn = psycopg2.connect(
+    host="localhost",
+    database="your_db",
+    user="your_user",
+    password="your_password",
+    port=5432
+)
 
-@app.route('/api/student/<int:student_id>')
-def find_student(student_id):
-    student = databaza["students"][student_id - 1]
-    return jsonify(student)
+cur = conn.cursor()
 
-if __name__ == "__main__":
-    app.run(debug=True)
+for student in databaza["students"]:
+    cur.execute(
+        """
+        INSERT INTO students (id, name, surname, nickname)
+        VALUES (%s, %s, %s, %s)
+        ON CONFLICT (id) DO NOTHING;
+        """,
+        (
+            student["id"],
+            student["name"],
+            student["surname"],
+            student["nicnkame"] 
+        )
+    )
+
+conn.commit()
+cur.close()
+conn.close()
