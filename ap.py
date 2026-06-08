@@ -1,171 +1,68 @@
-import os
-import psycopg2
 from flask import Flask, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
-def get_db_connection():
-    conn = psycopg2.connect(
-    host="dpg-d7ng4fe7r5hc73aqr48g-a.frankfurt-postgres.render.com",
-    database="trieda",
-    user="trieda_user",
-    password="CU76wt1voH4NyVoSvtaSeeyJyRKloMoN",
-    port=5432)
-    return conn
+# test route
+@app.route('/')
+def home():
+    return "Vitajte!"
 
 databaza = {
     "students": [
-        {  
+        {
             "id": 1,
             "name": "Adrián",
             "surname": "Červenka",
-            "nickame": "ChillyHotPpr"
+            "nickname": "ChillyHotPpr",
+            "image": "https://store.supercell.com/_next/static/media/bs_store_preview_cta_figure.3699673f.png"
         },
         {
             "id": 2,
             "name": "Karolína",
             "surname": "Kmeťová",
-            "nickame": "null"
+            "nickname": None,
+            "image": "https://sk-cars.pl/media/cache/17/6c/176c34752e75dfdb6e2f7219f2256ebd.jpg"
         },
         {
             "id": 3,
             "name": "Matej",
             "surname": "R",
-            "nickame": "T-34"
+            "nickname": "T-34",
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Tank_T-34.JPG/1280px-Tank_T-34.JPG"
         },
-        {  
+        {
             "id": 4,
             "name": "Milan",
             "surname": "K",
-            "nickame": "Lopta"
+            "nickname": "Lopta",
+            "image": "https://www.tonerpartner.sk/userdata/products/2612/8d-545-684c34d5b985c.jpg"
         },
         {
             "id": 5,
             "name": "Dávid",
             "surname": "Š",
-            "nickame": "DVD",
-            "image": "dvd.jpg"
-        },
-        {
-            "id": 6,
-            "name": "",
-            "surname": "",
-            "nickame": ""
-        },
-        {  
-            "id": 7,
-            "name": "",
-            "surname": "",
-            "nickame": ""
-        },
-        {
-            "id": 8,
-            "name": "",
-            "surname": "",
-            "nickame": ""
-        },
-        {
-            "id": 9,
-            "name": "",
-            "surname": "",
-            "nickame": ""
-        },
-        {  
-            "id": 10,
-            "name": "",
-            "surname": "",
-            "nickame": ""
-        },
-        {
-            "id": 11,
-            "name": "",
-            "surname": "",
-            "nickame": ""
-        },
-        {
-            "id": 12,
-            "name": "",
-            "surname": "",
-            "nickame": ""
-        },
-        {  
-            "id": 13,
-            "name": "",
-            "surname": "",
-            "nickame": ""
-        },
-        {  
-            "id": 14,
-            "name": "",
-            "surname": "",
-            "nickame": ""
-        },
-        {
-            "id": 15,
-            "name": "",
-            "surname": "",
-            "nickame": ""
-        },
-        {
-            "id": 16,
-            "name": "",
-            "surname": "",
-            "nickame": ""
-        },
-        {  
-            "id": 17,
-            "name": "",
-            "surname": "",
-            "nickame": ""
-        },
-        {  
-            "id": 18,
-            "name": "",
-            "surname": "",
-            "nickame": ""
-        },
-        {
-            "id": 19,
-            "name": "",
-            "surname": "",
-            "nickame": ""
-        },
-        {
-            "id": 20,
-            "name": "",
-            "surname": "",
-            "nickame": ""
-        },
-        
+            "nickname": "DVD",
+            "image": "https://i.pinimg.com/736x/c2/40/5b/c2405bf0cff40535767200dccc6bf589.jpg"
+        }
     ]
 }
 
+# GET ALL STUDENTS
 @app.route('/api')
 def api():
-    conn = get_db_connection()
-    cur = conn.cursor()
+    return jsonify(databaza)
 
-    cur.execute("SELECT * FROM students")
-    rows = cur.fetchall()
-
-    students = []
-    for row in rows:
-        students.append({
-            "id": row[0],
-            "name": row[1],
-            "surname": row[2],
-            "nickname": row[3],
-        })
-
-    cur.close()
-    conn.close()
-
-    return jsonify({"students": students})
-
+# GET ONE STUDENT (SAFE VERSION)
 @app.route('/api/student/<int:student_id>')
 def find_student(student_id):
-    student = databaza["students"][student_id - 1]
-    return jsonify(student)
+    for student in databaza["students"]:
+        if student["id"] == student_id:
+            return jsonify(student)
+
+    return jsonify({"error": "Student not found"}), 404
+
 
 if __name__ == "__main__":
     app.run(debug=True)
