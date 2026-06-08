@@ -69,7 +69,8 @@
             card.innerHTML = `
                 <strong>${student.name || "Neznáme"}</strong><br>
                 ${student.surname || ""}<br>
-                <small>${student.nickame || ""}</small>
+                <small>${student.nickname || ""}</small>
+                <img src="${student.image}" width="150" height="150" style="object-fit: cover;" />
             `;
 
             card.onclick = () => loadStudentDetail(student.id);
@@ -89,8 +90,8 @@
             <h2>Detail študenta</h2>
             <p><strong>Meno:</strong> ${student.name}</p>
             <p><strong>Priezvisko:</strong> ${student.surname}</p>
-            <p><strong>Prezývka:</strong> ${student.nickame}</p>
-            ${student.image ? `<img src="${student.image}" width="150">` : ""}
+            <p><strong>Prezývka:</strong> ${student.nickname}</p>
+            <img src="${student.image}" width="150" height="150" style="object-fit: cover;" />
         `;
     }
 
