@@ -1,13 +1,17 @@
+
+import psycopg2
 from flask import Flask, jsonify
-from flask_cors import CORS
-
+# novy db_connection + obrazok
 app = Flask(__name__)
-CORS(app)
 
-# test route
-@app.route('/')
-def home():
-    return "Vitajte!"
+def get_db_connection():
+    conn = psycopg2.connect(
+    host="dpg-d7ng4fe7r5hc73aqr48g-a.frankfurt-postgres.render.com",
+    database="trieda",
+    user="trieda_user",
+    password="CU76wt1voH4NyVoSvtaSeeyJyRKloMoN",
+    port=5432)
+    return conn
 
 databaza = {
     "students": [
@@ -49,20 +53,32 @@ databaza = {
     ]
 }
 
-# GET ALL STUDENTS
 @app.route('/api')
 def api():
-    return jsonify(databaza)
+    conn = get_db_connection()
+    cur = conn.cursor()
 
-# GET ONE STUDENT (SAFE VERSION)
+    cur.execute("SELECT * FROM students")
+    rows = cur.fetchall()
+
+    students = []
+    for row in rows:
+        students.append({
+            "id": row[0],
+            "name": row[1],
+            "surname": row[2],
+            "nickname": row[3],
+        })
+
+    cur.close()
+    conn.close()
+
+    return jsonify({"students": students})
+
 @app.route('/api/student/<int:student_id>')
 def find_student(student_id):
-    for student in databaza["students"]:
-        if student["id"] == student_id:
-            return jsonify(student)
-
-    return jsonify({"error": "Student not found"}), 404
-
+    student = databaza["students"][student_id - 1]
+    return jsonify(student)
 
 if __name__ == "__main__":
     app.run(debug=True)
