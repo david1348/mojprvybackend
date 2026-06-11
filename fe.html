@@ -6,57 +6,225 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: #f4f6f8;
+            background: #747474;
             margin: 0;
-            padding: 20px;
+            padding: 30px;
+            color: #f3f4f6;
+        }
+
+        #page {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            grid-template-rows: auto minmax(0, 1fr);
+            align-items: start;
+            gap: 20px;
+            max-width: 1280px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        #content-area {
+            grid-column: 1 / 2;
+            grid-row: 1 / 3;
+            width: 100%;
+            max-width: 980px;
+            transition: transform 0.3s ease;
+        }
+
+        .detail-open #content-area {
+            transform: translateX(-180px);
+        }
+
+        #header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            width: 100%;
         }
 
         h1 {
-            text-align: center;
+            font-size: 2rem;
+            margin: 0;
+            color: #ffffff;
+            letter-spacing: 0.02em;
         }
+
 
         #students {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 18px;
+            margin-top: 10px;
+            width: 100%;
+            max-width: 980px;
+        }
+
+
+        #controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        #controls label {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        #controls select {
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #64748b;
+            background: #1f2937;
+            color: #f8fafc;
+            min-width: 140px;
+            box-shadow: inset 0 1px 2px rgba(15,23,42,0.12);
         }
 
         .card {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background: #D3D3D3;
+            padding: 16px;
+            border-radius: 20px;
+            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
             cursor: pointer;
-            transition: 0.2s;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            min-height: 340px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .card strong {
+            display: block;
+            margin: 0;
+            font-size: 1.1rem;
+            color: #111827;
+        }
+
+        .card .student-meta {
+            margin: 0;
+            line-height: 1.25;
+            color: #374151;
+        }
+
+        .card .student-meta small {
+            display: block;
+            margin-top: 2px;
+            color: #6b7280;
         }
 
         .card:hover {
             transform: scale(1.03);
         }
 
-        #detail {
-            margin-top: 30px;
-            padding: 20px;
-            background: white;
+        .card-image {
+            width: 100%;
+            aspect-ratio: 1 / 1;
             border-radius: 10px;
-            display: none;
+            background-size: cover;
+            background-position: center;
+            margin-top: 10px;
+        }
+
+        #detail {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+            align-self: start;
+            width: 0;
+            overflow: hidden;
+            background: #f8fafc;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+            transition: width 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+            opacity: 0;
+            padding: 0;
+        }
+
+        .detail-open #detail {
+            width: 360px;
+            opacity: 1;
+            padding: 24px;
+        }
+
+        #detail h2 {
+            margin-top: 0;
+            color: #111827;
+        }
+
+        #detail .detail-close {
+            background: transparent;
+            border: none;
+            color: #6b7280;
+            font-size: 1rem;
+            margin-bottom: 14px;
+            cursor: pointer;
+            text-align: left;
+            padding: 0;
+        }
+
+        #detail .detail-close:hover {
+            color: #111827;
+        }
+
+        #detail img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-top: 15px;
+        }
+
+        #detail .detail-field {
+            margin: 12px 0;
+            color: #374151;
+            font-size: 0.96rem;
+            line-height: 1.45;
+        }
+
+        #detail p {
+            margin: 10px 0;
+            color: #374151;
+            line-height: 1.5;
         }
     </style>
 </head>
 <body>
 
-<h1>Zoznam študentov</h1>
+<div id="page">
+        <div id="content-area">
+            <div id="header">
+                <h1>Zoznam študentov</h1>
+                <div id="controls">
+                    <label for="sort-by">Zoradiť podľa:</label>
+                    <select id="sort-by">
+                        <option value="id">ID</option>
+                        <option value="name">Meno</option>
+                        <option value="surname">Priezvisko</option>
+                        <option value="nickname">Prezývka</option>
+                    </select>
+                    <select id="sort-order">
+                        <option value="asc">Vzostupne</option>
+                        <option value="desc">Zostupne</option>
+                    </select>
+                </div>
+            </div>
 
-<div id="students"></div>
+            <div id="students"></div>
+        </div>
 
-<div id="detail"></div>
-
-<script>
+        <div id="detail"></div>
+    <script>
     const API_URL = "http://127.0.0.1:5000/api";
+    const sortBy = document.getElementById("sort-by");
+    const sortOrder = document.getElementById("sort-order");
 
     async function loadStudents() {
-        const res = await fetch(API_URL);
+        const url = `${API_URL}?sort_by=${encodeURIComponent(sortBy.value)}&order=${encodeURIComponent(sortOrder.value)}`;
+        const res = await fetch(url);
         const data = await res.json();
 
         const container = document.getElementById("students");
@@ -67,10 +235,9 @@
             card.className = "card";
 
             card.innerHTML = `
-                <strong>${student.name || "Neznáme"}</strong><br>
-                ${student.surname || ""}<br>
-                <small>${student.nickname || ""}</small>
-                <img src="${student.image}" width="150" height="150" style="object-fit: cover;" />
+                <strong>${student.name || "Neznáme"}</strong>
+                <div class="student-meta">ID: ${student.id}<br>${student.surname || ""}<small>${student.nickname || ""}</small></div>
+                <div class="card-image" style="background-image: url('${student.image}')"></div>
             `;
 
             card.onclick = () => loadStudentDetail(student.id);
@@ -83,20 +250,31 @@
         const res = await fetch(`${API_URL}/student/${id}`);
         const student = await res.json();
 
-        const detail = document.getElementById("detail");
-        detail.style.display = "block";
+        document.body.classList.add('detail-open');
 
+        const detail = document.getElementById("detail");
         detail.innerHTML = `
+            <button class="detail-close" onclick="closeDetail()">‹ Zavrieť</button>
             <h2>Detail študenta</h2>
-            <p><strong>Meno:</strong> ${student.name}</p>
-            <p><strong>Priezvisko:</strong> ${student.surname}</p>
-            <p><strong>Prezývka:</strong> ${student.nickname}</p>
-            <img src="${student.image}" width="150" height="150" style="object-fit: cover;" />
+            <p class="detail-field"><strong>ID:</strong> ${student.id}</p>
+            <p class="detail-field"><strong>Meno:</strong> ${student.name}</p>
+            <p class="detail-field"><strong>Priezvisko:</strong> ${student.surname}</p>
+            <p class="detail-field"><strong>Prezývka:</strong> ${student.nickname || "(žiadna)"}</p>
+            <img src="${student.image}" />
         `;
     }
 
+    function closeDetail() {
+        document.body.classList.remove('detail-open');
+        const detail = document.getElementById("detail");
+        detail.innerHTML = '';
+    }
+
+    sortBy.addEventListener("change", loadStudents);
+    sortOrder.addEventListener("change", loadStudents);
     loadStudents();
 </script>
 
+</div>
 </body>
 </html>
